@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>강아지 사진</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="wrap">
+        <header>
+            <h1>강아지 랜덤 사진</h1>
+            <div>
+                <div class="filter">
+                    <input type="text" class="filter_input">
+                    <button type="button" class="filter_btn">필터링</button>
+                </div>
+                <select class="category">
+                    <option value="all">all</option>
+                </select>
+                <button type="button" class="reset_btn">RESET</button>
+            </div>
+        </header>
+        <main>
+            <ul class="img_list">
+                <!-- <li class="img_list_item"></li> -->
+            </ul>
+        </main>
+        <button type="button" class="more_btn">MORE</button>
+        <button type="button" class="top_btn" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">TOP</button>
+    </div>
+</body>
+<script src="main.js"></script>
+</html>
