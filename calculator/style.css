@@ -1,0 +1,117 @@
+/* 모든 요소의 기본 여백 제거 */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+/* HTML과 Body의 기본 설정 */
+html, body {
+    height: 100%;
+}
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.calculator{
+    width:320px;
+    margin:40px auto;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 6px 20px 
+    rgba(0,0,0,.12);
+    background-color:rgb(70, 66, 66);
+    
+}
+.prev_clac{
+    height: 17px;
+    font-size: 14px;
+    line-height: 14px;
+    color: #666;
+    text-align: right;
+}
+.top_btn_wrap{
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.top_btn_wrap button{
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: none;
+}
+.top_btn_wrap button.red{
+    background-color: red;
+}
+.top_btn_wrap button.yellow{
+    background-color: yellow;
+}
+.top_btn_wrap button.green{
+    background-color: green;
+}
+.display{
+    background-color:#fff;
+    border-radius:8px;
+    padding:8px 12px;
+}
+.result{
+    width: 100%;
+    background-color: #fff;
+    border: none;
+    height: 56px;
+    font-size: 24px;
+    text-align: right;
+    color: #111;
+    outline: none;
+}
+
+
+.keys{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+    margin-top:12px 
+}
+/* .keys{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top:12px
+} */
+.keys button{
+    /* flex: 1 1 calc(25% - 9px); */
+    height:48px;
+    border:0;
+    border-radius:8px;
+    background-color:#fff;
+    font-size: 16px;
+    cursor:pointer
+}
+.keys button:hover{
+    background-color: #e6e6e9;
+}
+.keys button.operator_btn,
+.keys button.result_btn{
+    background-color:#ffd166
+}
+
+.keys button.action,
+.keys button.clear_btn,
+.keys button.del_btn{
+    background-color:#e6e6e9
+}
+.keys button.active {
+    transform: translateY(2px);
+}
+.keys button.zero {
+    grid-column: span 2;
+    /* flex-basis: calc(50% - 6px); */
+}
+
+.keys button:active{
+    transform: translateY(2px);
+}
