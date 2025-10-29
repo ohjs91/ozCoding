@@ -63,37 +63,3 @@ allBtns.forEach(v => {
         }
     })
 })
-// 숫자 버튼 이벤트 
-// numberBtns.forEach(v => {
-//     v.addEventListener('click', function(){
-//         // 0 을 여러번 입력 방지
-//         if(viewNumber.value == 0 && v.value == 0 && !curNum.includes('.')){
-//             return
-//         }else{
-//             curNum = curNum + this.value;
-//         }
-//         // 화면 출력
-//         viewNumber.value = curNum
-//     })
-// })
-// // 소수점 버튼 이벤트
-// pointBtn.addEventListener('click', function(){
-//     if(curNum.includes('.')){
-//         // . 이있을때 . 입력을 막는다
-//         return
-//     }else if(!curNum) {
-//         // 입력 값이 없이 . 을 눌렀을때 0. 으로 시작하게 한다
-//         curNum = 0 + this.value
-//     }else{
-//         curNum =  curNum + this.value
-//     }
-//     viewNumber.value = curNum
-// })
-// // 초기화
-// clearBtn.addEventListener('click', function(){
-//     // 다 초기값으로 돌린다
-//     viewNumber.value = 0;
-//     prevNum = 0;
-//     curNum = '';
-// })
-
