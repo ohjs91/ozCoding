@@ -1,165 +1,133 @@
-/*
-    무엇을 구현해야 될지 알아보자.
-*/
-
-// 이슈 ex) 3.0003 - 0.3 하면 2.700300000000004 가나옴
-const allBtns = document.querySelectorAll('button');
+const allBtns = document.querySelectorAll('.button');
 // 숫자 버튼
 const numberBtns = document.querySelectorAll('.number');
-// 사칙연산 버튼
-const operatorBtns = document.querySelectorAll('.operator');
 // 결과 화면
 const viewNumber = document.querySelector('.result');
-// 이전값 보여주기
-const prevNumber = document.querySelector('.prev_num');
-// 선택한 연산자 보여주기
-const operator = document.querySelector('.prev_operator');
-// 연산할값 보여주기
-const curNumber = document.querySelector('.cur_num');
 // 초기화 버튼
 const clearBtn = document.querySelector('.clear');
-// 삭제 버튼
-const delBtn = document.querySelector('.del');
 // 수소점 버튼
 const pointBtn = document.querySelector('.point');
-// 계산 완료 버튼
-const resultBtn = document.querySelector('.complete');
-//이전값
-let prevNum = 0;
-
+// 이벤트 버블링 확인
+const keys = document.querySelector('.keys')
+// 앞의 값
+let firstOperand = '';
 // 현재 값
-let curNum = '';
-
+let secondOperand = '';
 // 사칙연산 담는값 
-let operatorValue = '';
+let operator = '';
 
-//모든 버튼 active 클래스 추가
-// allBtns.forEach(v => {
-//     v.addEventListener('click', function(){
-//         setTimeout(() => this.classList.remove('active'), 100);
-//         this.classList.add('active');
-//     })
-// })
 
-// 숫자 버튼 이벤트 
-numberBtns.forEach(v => {
+//모든 버튼 선택
+allBtns.forEach(v => {
+    // 버튼 하나하나 순회
     v.addEventListener('click', function(){
-        // 사칙연산을 안눌렀을때 숫자나 . 을 누르면 입력전에 초기화한다
-        if(prevNum && operatorValue == '' && !curNum.includes('.')) {
-            curNum = ''
+        // 숫자버튼 일때
+        if (this.classList.contains('number')) {
+            if(secondOperand.length >= 16) return 
+            // 사칙연산을 안눌렀을때 숫자나 . 을 누르면 입력전에 초기화한다
+            if(firstOperand && operator == '' && !secondOperand.includes('.')) {
+                secondOperand = ''
+            }
+            // 0 을 여러번 입력 방지
+            if(viewNumber.value == 0 && v.value == 0 && !secondOperand.includes('.')){
+                return
+            }
+            
+            secondOperand +=  this.value;
+            
+            // 화면 출력
+            viewNumber.value = secondOperand.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            return;
         }
-        // 0 일때 0을 누르면 예외처리
-        if(viewNumber.value == 0 && v.value == 0 && !curNum.includes('.')){
+        // . 버튼 일때
+        if (this.classList.contains('point')) {
+            if(secondOperand.includes('.')){
+                // . 이있을때 . 입력을 막는다
+                return
+            }else if(secondOperand == '') {
+                // 입력 값이 없이 . 을 눌렀을때 0. 으로 시작하게 한다
+                secondOperand = 0 + this.value
+            }else{
+                secondOperand +=  this.value
+            }
+            viewNumber.value = secondOperand.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             return
-        }else{
-            curNum = curNum + this.value;
         }
-        
-        // 화면 출력
-        viewNumber.value = curNum
+        // 초기화 일때
+        if (this.classList.contains('clear')) {
+            // 다 초기값으로 돌린다
+            viewNumber.value = 0;
+            firstOperand = 0;
+            secondOperand = '';
+            operator = '';
+            return
+        }
+        // 연산자 일때
+        if (this.classList.contains('operator')){
+
+            // 연속 연산 일때 = 이미 연산을 눌렀고 두번째 값이 있을때
+            if(operator && secondOperand !== ''){
+                // 계산 함수 실행
+                const result = calculate(firstOperand,secondOperand,operator)
+                // 계산된결과 화면 출력
+                viewNumber.value = result.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                // 새 연산자 저장
+                operator = this.value
+                // 결과값 처음값에 저장
+                firstOperand = result;
+                // 뒤에값 비우기
+                secondOperand = ''
+            }else{// 첫 연산 할때
+                // 연산자 저장
+                operator = this.value
+                // firstOperand 에 secondOperand 저장하고 비움
+                firstOperand = secondOperand
+                secondOperand = ''
+                console.log('firstOperand = ', firstOperand)
+                console.log('operator = ', operator)
+            }
+            return
+        }
+
+        // 계산 
+        if (this.classList.contains('complete')){
+            // 계산 함수 실행
+            const result = calculate(firstOperand,secondOperand,operator)
+             // 계산결과 화면에 출력
+            viewNumber.value = result.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            // secondOperand 에 result 저장
+            secondOperand = result;
+            // 사칙연산 초기화
+            operator = ''
+        }
+
+        //삭제 
+        if (this.classList.contains('del')){
+            secondOperand = secondOperand.slice(0, -1)
+            viewNumber.value = secondOperand
+        }
     })
 })
-// 소수점 버튼 이벤트
-pointBtn.addEventListener('click', function(){
-    
-    // console.log('pre',prevNum)
-    console.log('cur',curNum)
-    // console.log(operatorValue)
-    curNum = String(curNum)
-    if(curNum.includes('.')){
-        return
-    }
-    if(prevNum && operatorValue == '') {
-        // 앞에 숫자없이 점부터 눌렀을때 0. 으로 시작하게 한다
-        curNum = 0 + this.value
-    }else{
-        curNum = curNum == '' ? 0 + this.value : curNum + this.value
-    }
-    
-    viewNumber.value = curNum
-})
-// 사칙연산 버튼 이벤트 
-operatorBtns.forEach(v => {
-    v.addEventListener('click', function(){
-        if(operatorValue == this.value){
-            return
-        }else{
-            operatorValue = this.value
-            prevNum = curNum
-            curNum = ''
-            prevNumber.textContent = prevNum
-            operator.textContent = operatorValue
-            curNumber.textContent = ''
-        }
-    })
-})
-// 출력
-function viewDisplay(){
 
-}
-
-// 초기화
-clearBtn.addEventListener('click', function(){
-    viewNumber.value = 0;
-    prevNum = 0;
-    curNum = '';
-    operatorValue = '';
-    prevNumber.textContent = ''
-    operator.textContent = ''
-    curNumber.textContent = ''
-})
-// 삭제
-delBtn.addEventListener('click', function(){
-    curNum = curNum.slice(0, -1)
-    viewNumber.value = curNum
-})
-
-
-resultBtn.addEventListener('click', function(){
-    resultFunc()
-})
-
-// 결과 함수
-function resultFunc(){
-    
+function calculate (first,second,operator){
+    first = Number(first)
+    second = Number(second)
     let resultNum = 0;
-    switch (operatorValue) {  
+    switch (operator) {  
         case '+': 
-            resultNum = plusFunc()
+            resultNum = first + second
             break;
         case '-': 
-            resultNum = minusFunc()
+            resultNum = first - second
             break;
         case '*': 
-            resultNum = multiFunc()
+            resultNum = first * second
             break;
         case '/': 
-            resultNum = divisionFunc()
+            resultNum = second == 0 ? NaN : first / second
             break;
         default: 
-    } 
-    curNumber.textContent = curNum
-    console.log(resultNum)
-    viewNumber.value = resultNum
-    curNum = String(resultNum)
-    operatorValue = ''
-}
-// 더하기 함수
-function plusFunc(){
-    return Number(prevNum) + Number(curNum)
-}
-
-// 뺴기 함수
-function minusFunc(){
-    return Number(prevNum) - Number(curNum)
-}
-
-// 곱셈 함수
-function multiFunc(){
-    return Number(prevNum) * Number(curNum)
-}
-
-// 나눗셈 함수
-function divisionFunc(){
-    return Number(prevNum) / Number(curNum)
+            console.log('error')
+    }
+    return String(resultNum).length > 16 ? String(resultNum).slice(0, 16) : String(resultNum);
 }
