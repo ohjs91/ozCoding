@@ -1,0 +1,21 @@
+{
+  "name": "practice",
+  "version": "1.0.0",
+  "main": "npm.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node npm.js"
+  },
+  "keywords": [
+    "npm",
+    "javascript",
+    "node"
+  ],
+  "author": "OJS <ojs@gmail.com>",
+  "license": "ISC",
+  "description": "oz코딩스쿨 React를 위한 Node.js 3강의 내용",
+  "dependencies": {
+    "dayjs": "^1.11.19"
+  }
+}

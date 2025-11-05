@@ -32,9 +32,7 @@ allBtns.forEach(v => {
             if(viewNumber.value == 0 && v.value == 0 && !secondOperand.includes('.')){
                 return
             }
-            
             secondOperand +=  this.value;
-            
             // 화면 출력
             viewNumber.value = secondOperand.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             return;
@@ -64,7 +62,6 @@ allBtns.forEach(v => {
         }
         // 연산자 일때
         if (this.classList.contains('operator')){
-
             // 연속 연산 일때 = 이미 연산을 눌렀고 두번째 값이 있을때
             if(operator && secondOperand !== ''){
                 // 계산 함수 실행
@@ -88,7 +85,6 @@ allBtns.forEach(v => {
             }
             return
         }
-
         // 계산 
         if (this.classList.contains('complete')){
             // 계산 함수 실행
@@ -100,7 +96,6 @@ allBtns.forEach(v => {
             // 사칙연산 초기화
             operator = ''
         }
-
         //삭제 
         if (this.classList.contains('del')){
             secondOperand = secondOperand.slice(0, -1)
