@@ -18,18 +18,18 @@ function Counter() {
   const [counter, setCounter] = useState(1);
   const [counter2, setCounter2] = useState(100);
   // 컴포넌트가 처음 렌더링 될때 업데이트 될때도 실핼
-  // useEffect(() => {
-  //   console.log("useEffect");
-  // });
+  useEffect(() => {
+    console.log("useEffect 렌더링 과 업데이트");
+  });
 
   // 처음 렌더링 될때 실행
-  // useEffect(() => {
-  //   console.log("useEffect");
-  // }, []);
+  useEffect(() => {
+    console.log("useEffect 처음 렌더링");
+  }, []);
 
   // 처음 렌더링 될때, counter2가 변화가 있을때 실행
   useEffect(() => {
-    console.log("useEffect");
+    console.log("useEffect counter2");
     // counter2가 변경될때마다 리렌더링 발생 이전 컴포넌트는 없어지고 새로운 컴포넌트가 생겨서 즉 컴포넌트가 없어지는 단계가 들어가있어서 return 이 실행
     return () => {
       console.log("return ");
@@ -47,5 +47,37 @@ function Counter() {
       </button>
     </div>
   );
+}
+
+function App() {
+  const [isShow, setIsShow] = useState(false);
+  useEffect(() => {
+    console.log("A");
+    return () => {
+      console.log("B");
+    };
+  });
+  return (
+    <>
+      {isShow && <Column />}
+      <button
+        onClick={() => {
+          setIsShow((prev) => !prev);
+        }}
+      >
+        show Column
+      </button>
+    </>
+  );
+}
+
+function Column() {
+  useEffect(() => {
+    console.log("C");
+    return () => {
+      console.log("D");
+    };
+  });
+  return <div>Hi I`m Oz</div>;
 }
 export default App;
